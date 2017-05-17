@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <h4>List all Processes</h4>
+        <ul id="Processes" />
+    </div>
+    <div>
+        Worker ID:<input id="GetId" type="text" /><input type="button" value="Search" onclick="GetProcessInfo();" />
+        <p id="getProcess"></p>
+    </div>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+
+        var link = 'api/Worker';
+        $(document)
+            .ready(function()
+            {
+                $.get(link)
+                    .done(function(data)
+                        {
+                        $.each(data, function(i, val)
+                        {
+                            $("#Processes")
+                                .append("<li>Process " + val.workerProcessID + " -: " + val.workerName + "</li>")
+                        });
+                    });
+            });
+        function GetVal(process)
+        {
+            return "Process: " + process.workerName + " ,   Process N0-: " + process.workerProcessID
+        }
+        function GetProcessInfo()
+        {
+            var workerID = $("#GetId")
+               .val();
+            $.getJSON(link + '/' + P_id)
+                .done(function(data)
+               {
+                    $("#getProcess")
+                        .text(GetVal(data))
+                })
+                .fail(function()
+                {
+                    alert("data not found");
+                });
+        }
+    </script>
+</body>
+
+</html>  
